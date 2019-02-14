@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/index.css">
+        <title>Robot Dashboard - Lynbrook Robotics</title>
+    </head>
+    <body>
+        <header>
+            <h1>Robot Dashboard</h1>
+            <div id="connection-icon"></div>
+            <span id="connection-status-text">CONNECTING</span>
+        </header>
+        <main id="tables">
+            <!--The tables will get inserted here-->
+        </main>
+        <!--suppress HtmlUnknownTarget -->
+        <script src="./networktables/networktables.js"></script>
+        <script src="./js/index.js"></script>
+        <script>
+            const tables = document.getElementById("tables");
+
+            /**
+             * @param keyParts An array of strings that compose a key, excluding the last value (the key name)
+             * @return DocumentFragment|HTMLElement a section that any child keys or tables should be placed under
+             */
+            function getParentContainerForKey(keyParts) {
+                const keyId = NetworkTables.keyToId(keyParts.join("/"));
+
+                const parent = document.getElementById(keyId);
+
+                let open = true;
+                if (parent === null) {
+                    const section = document.createElement("section");
+                    section.className = "table-values";
+                    section.id = keyId;
+                    section.append();
+
+                    const heading = document.createElement(`h${Math.min(keyParts.length - 1, 6)}`);
+                    heading.className = "table-heading";
+                    heading.textContent = keyParts.pop();
+                    heading.addEventListener("click", () => {
+                        section.style.display = open ? "none" : "block";
+                        open = !open;
+                    });
+
+                    const fragment = document.createDocumentFragment();
+                    fragment.appendChild(heading);
+                    fragment.appendChild(section);
+
+                    if (keyParts.length === 1) {
+                        tables.append(fragment);
+                        return document.getElementById(keyId);
+                    } else {
+                        const parent = getParentContainerForKey(keyParts); // The array got popped earlier
+                        parent.append(fragment);
+                        return document.getElementById(keyId);
+                    }
+                } else return parent;
+            }
+
+            NetworkTables.addGlobalListener((key, value, isNew) => {
+                const keyParts = key.split("/"), name = keyParts.pop();
+                const keyId = NetworkTables.keyToId(key);
+                if (isNew) {
+                    const label = document.createElement("label");
+                    label.textContent = name;
+
+                    const input = document.createElement("input");
+                    input.className = "right";
+                    input.id = keyId;
+                    input.value = value;
+                    input.addEventListener("keyup", e => {
+                        NetworkTables.setValue(key, input.value);
+                    });
+
+                    const entry = document.createElement("div");
+                    entry.className = "entry";
+                    entry.append(label, input);
+
+                    const parent = getParentContainerForKey(keyParts);
+                    parent.append(entry);
+                } else {
+                    const input = document.getElementById(keyId);
+                    if (input !== document.activeElement) {
+                        input.value = value;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
