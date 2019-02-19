@@ -1,0 +1,96 @@
+button {
+    background-color: white;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    border: thin solid gray;
+    cursor: pointer;
+    margin: 0 8px;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    -webkit-transition: box-shadow 500ms;
+    -moz-transition: box-shadow 500ms;
+    -ms-transition: box-shadow 500ms;
+    -o-transition: box-shadow 500ms;
+    transition: box-shadow 500ms;
+}
+
+.graph-container {
+    display: inline-block;
+    margin: 16px;
+    width: 33%;
+}
+
+.graph-gutter {
+    align-items: center;
+    border-top: thin solid lightgray;
+    display: flex;
+    padding: 10px;
+}
+
+.graph-gutter button.delete {
+    color: red;
+}
+
+.graph-gutter button:hover {
+    -webkit-box-shadow: 0 0 5px gray;
+    -moz-box-shadow: 0 0 5px gray;
+    box-shadow: 0 0 5px gray;
+}
+
+.graph-gutter .fas {
+    margin-right: 8px;
+}
+
+label[for=search], #search {
+    margin: 0 8px;
+}
+
+#key-autocomplete {
+    position: relative;
+    display: inline-block;
+}
+
+#search {
+    width: 400px;
+}
+
+
+#blackout {
+    background-color: black;
+    opacity: 0.8;
+}
+
+#blackout, #modal {
+    display: none;
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+}
+
+#modal {
+    align-items: center;
+    pointer-events: none;
+    justify-content: center;
+}
+
+#modal > form {
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    min-width: 50%;
+    padding: 16px;
+    pointer-events: all;
+}
+
+#modal form label {
+    display: block;
+    margin: 10px;
+}
+
+#modal form label input {
+    float: right;
+}

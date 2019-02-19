@@ -2,121 +2,44 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+
+        <link rel="icon" href="favicon.ico">
+        <link rel="stylesheet" href="css/all.min.css">
+        <link rel="stylesheet" href="css/dashboard.css">
+        <link rel="stylesheet" href="css/graphs.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="css/index.css">
-        <title>Graphs - Robot Dashboard - Lynbrook Robotics</title>
+        <title>Dashboard - Lynbrook Robotics</title>
     </head>
     <body>
         <header>
             <h1>Robot Dashboard</h1>
-            <div id="connection-icon"></div>
-            <span id="connection-status-text">CONNECTING</span>
+            <form id="search-form">
+                <label for="search">Add Graph<input list="keys" id="search" placeholder="Key" type="text"></label>
+            </form>
+            <p class="disconnected" id="connection-status">NO CONNECTION</p>
+            <nav>
+                <ul>
+                    <li><a href="/index.html">Values</a></li>
+                    <li><a class="active" href="/graphs.html">Graphs</a></li>
+                </ul>
+            </nav>
         </header>
-
-        <div style="padding: 16px;">
-            <label for="search-box">Add a graph: </label><input id="search-box" placeholder="Key" type="text">
-            <div id="autocomplete"></div>
+        <datalist id="keys"></datalist>
+        <div id="blackout"></div>
+        <div id="modal">
+            <form>
+                <label for="y-min">Minimum Y-value <input id="y-min" type="number"></label>
+                <label for="y-max">Maximum Y-value <input id="y-max" type="number"></label>
+                <button>Update</button>
+            </form>
         </div>
-
+        <div id="graphs"></div>
+        <script src="js/Chart.bundle.min.js"></script>
         <!--suppress HtmlUnknownTarget -->
-        <script src="./networktables/networktables.js"></script>
-        <script src="./js/chart.bundle.min.js"></script>
-        <script src="./js/index.js"></script>
-        <script>
-            const autocomplete = document.getElementById("autocomplete");
-            const search = document.getElementById("search-box");
-            let keys = NetworkTables.getKeys();
-
-            search.addEventListener("focusin", e => {
-                keys = NetworkTables.getKeys();
-            });
-
-            search.addEventListener("input", e => {
-                autocomplete.childNodes.forEach(node => autocomplete.removeChild(node));
-                keys.filter(it => search.value.split(" ").every(kw => it.toLowerCase().includes(kw.toLowerCase()))).forEach(key => {
-                    const p = document.createElement("p");
-                    p.addEventListener("click", () => {
-                        autocomplete.childNodes.forEach(node => autocomplete.removeChild(node));
-                        let lastValue = null, update = true;
-                        const canvas = document.createElement("canvas");
-                        const chart = new Chart(canvas, {
-                            type: 'line',
-                            data: {
-                                // labels: ["January", "February", "March", "April", "May", "June", "July"],
-                                datasets: [{
-                                    label: key,
-                                    data: [],
-                                }]
-                            },
-                            options: {
-                                animation: false,
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {}
-                                    }],
-                                    xAxes: [{
-                                        display: false,
-                                        type: 'time',
-                                        time: {
-                                            stepSize: 1000,
-                                            unit: 'millisecond'
-                                        }
-                                    }]
-                                }
-                            }
-                        });
-
-                        const yRange = document.createElement("input");
-                        yRange.addEventListener("input", e => {
-                            if (yRange.value.trim() === "") {
-                                chart.options.scales.yAxes[0].ticks = undefined;
-                            } else {
-                                const [min, max] = yRange.value.trim().split("|");
-                                chart.options.scales.yAxes[0].ticks = {
-                                    min: parseFloat(min),
-                                    max: parseFloat(max)
-                                };
-                                chart.update();
-                            }
-                        });
-
-                        const container = document.createElement("div");
-
-                        const deleteButton = document.createElement("button");
-                        deleteButton.addEventListener("click", e => {
-                            container.parentNode.removeChild(container);
-                            update = false;
-                        });
-                        deleteButton.textContent = "Delete";
-                        container.style.width = "500px";
-                        container.append(canvas, yRange, deleteButton);
-                        container.className = "graph";
-
-                        document.body.append(container);
-
-                        NetworkTables.addKeyListener(key, (key, value) => {
-                            if (update) {
-                                lastValue = value;
-                            }
-                        });
-                        const updateGraph = () => {
-                            chart.data.datasets[0].data.push({
-                                t: new Date(),
-                                y: parseFloat(lastValue)
-                            });
-                            while (new Date(Date.now() - 20000) > (chart.data.datasets[0].data[0] || 0).t) {
-                                chart.data.datasets[0].data.splice(0, 1);
-                            }
-                            chart.update();
-                            requestAnimationFrame(updateGraph);
-                        };
-
-                        requestAnimationFrame(updateGraph);
-                    });
-                    p.textContent = key;
-                    autocomplete.append(p);
-                });
-            });
-        </script>
+        <script src="networktables/cbor.js"></script>
+        <!--suppress HtmlUnknownTarget -->
+        <script src="networktables/networktables.js"></script>
+        <script src="js/dashboard.js"></script>
+        <script src="js/graphs.js"></script>
     </body>
 </html>

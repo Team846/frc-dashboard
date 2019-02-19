@@ -1,0 +1,90 @@
+div.entry {
+    align-items: center;
+    display: flex;
+    padding: 6px 5px;
+}
+
+div.entry:hover, h1.table:hover {
+    background-color: dodgerblue;
+    color: white;
+}
+
+h1.table {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    margin: 8px 8px 0;
+}
+
+h1.table::before {
+    content: "►";
+    font-size: .75em;
+    margin: 8px;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transition: transform 500ms;
+    -moz-transition: transform 500ms;
+    -ms-transition: transform 500ms;
+    -o-transition: transform 500ms;
+    transition: transform 500ms;
+}
+
+h1.table.collapsed::before {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+input.entry {
+    float: right;
+}
+
+label.entry {
+    -webkit-animation: new-entry 1s;
+    -o-animation: new-entry 1s;
+    animation: new-entry 1s;
+    flex-grow: 1;
+}
+
+label.entry.changed {
+    color: blue;
+}
+
+section.table {
+    max-height: fit-content;
+    overflow: hidden;
+    padding-left: 32px;
+    -webkit-transition: max-height 500ms;
+    -moz-transition: max-height 500ms;
+    -ms-transition: max-height 500ms;
+    -o-transition: max-height 500ms;
+    transition: max-height 500ms;
+}
+
+section.table.collapsed {
+    max-height: 0;
+}
+
+section.table p {
+    margin: 5px;
+}
+
+#values {
+    color: gray;
+    margin: auto;
+    padding: 32px;
+}
+
+@keyframes new-entry {
+    from {
+        color: green;
+    }
+    to {
+        color: inherit;
+    }
+}
