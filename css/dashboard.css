@@ -4,9 +4,87 @@
     box-sizing: border-box;
 }
 
+.blackout, .modal {
+    height: 100vh;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+}
+
+.blackout {
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 99;
+}
+
+.gutter {
+    padding-top: 15px;
+}
+
+.modal {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    -webkit-transition: top 500ms;
+    -moz-transition: top 500ms;
+    -ms-transition: top 500ms;
+    -o-transition: top 500ms;
+    transition: top 500ms;
+    z-index: 100;
+}
+
+.modal-material {
+    background-color: white;
+    padding: 32px;
+    pointer-events: all;
+}
+
 body {
     font-family: sans-serif;
     margin: 0;
+}
+
+button {
+    border: none;
+    border-radius: 25px;
+    margin: 0 8px;
+    padding: 10px 15px;
+    text-transform: uppercase;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+button.fab {
+    background-color: black;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    bottom: 32px;
+    color: white;
+    height: 48px;
+    position: fixed;
+    right: 32px;
+    -webkit-transition: transform 500ms;
+    -moz-transition: transform 500ms;
+    -ms-transition: transform 500ms;
+    -o-transition: transform 500ms;
+    transition: transform 500ms;
+    width: 48px;
+}
+
+button.fab:hover {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+button:not(.fab) i {
+    margin-right: 8px;
 }
 
 header {

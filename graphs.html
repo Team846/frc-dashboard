@@ -13,9 +13,6 @@
     <body>
         <header>
             <h1>Robot Dashboard</h1>
-            <form id="search-form">
-                <label for="search">Add Graph<input list="keys" id="search" placeholder="Key" type="text"></label>
-            </form>
             <p class="disconnected" id="connection-status">NO CONNECTION</p>
             <nav>
                 <ul>
@@ -24,16 +21,12 @@
                 </ul>
             </nav>
         </header>
-        <datalist id="keys"></datalist>
-        <div id="blackout"></div>
-        <div id="modal">
-            <form>
-                <label for="y-min">Minimum Y-value <input id="y-min" type="number"></label>
-                <label for="y-max">Maximum Y-value <input id="y-max" type="number"></label>
-                <button>Update</button>
-            </form>
-        </div>
         <div id="graphs"></div>
+        <button class="fab" id="new-graph"><!--suppress CheckTagEmptyBody --><i class="fas fa-plus"></i></button>
+
+        <!--suppress CheckTagEmptyBody -->
+        <datalist id="keys"></datalist>
+
         <script src="js/Chart.bundle.min.js"></script>
         <!--suppress HtmlUnknownTarget -->
         <script src="networktables/cbor.js"></script>
