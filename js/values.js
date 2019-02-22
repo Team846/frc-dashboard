@@ -98,3 +98,7 @@ NetworkTables.addGlobalListener((key, value, isNew) => {
     }
     if (value === Infinity) console.debug(key, value);
 });
+
+document.getElementById("download-nt-config").addEventListener("click", e => {
+
+});
