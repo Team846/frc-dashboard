@@ -367,7 +367,6 @@ requestAnimationFrame(render);
 
 NetworkTables.addRobotConnectionListener(connected => {
     if (connected) {
-        const graphs = JSON.parse(localStorage.getItem("local-graphs")) || [];
-        graphs.forEach(createGraphFromConfig);
+        localGraphs.forEach(createGraphFromConfig);
     }
 });
