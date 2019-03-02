@@ -100,5 +100,38 @@ NetworkTables.addGlobalListener((key, value, isNew) => {
 });
 
 document.getElementById("download-nt-config").addEventListener("click", e => {
+    window.open("/networktables/backup")
+});
 
+document.getElementById("upload-nt-config").addEventListener("change", e => {
+    if (e.target.files[0]) {
+        const reader = new FileReader();
+        reader.addEventListener("load", e => {
+            const backup = CBOR.decode(reader.result);
+            Object.keys(backup).forEach(key => {
+                NetworkTables.putValue(key, backup[key]);
+            });
+        });
+        reader.readAsArrayBuffer(e.target.files[0]);
+    }
+});
+
+
+function download(filename, text) {
+    const element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+NetworkTables.addRobotConnectionListener(connected => {
+    if (connected === false) {
+        while (values.firstChild) values.removeChild(values.firstChild);
+    }
 });
