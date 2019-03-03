@@ -123,7 +123,7 @@ function create2dChartConfig(config = {
     ];
 }
 
-newGraphButton.addEventListener("click", e => {
+newGraphButton.addEventListener("click", () => {
     let closeModal;
 
     const lineChartElements = createLineChartConfig();
@@ -368,5 +368,7 @@ requestAnimationFrame(render);
 NetworkTables.addRobotConnectionListener(connected => {
     if (connected) {
         localGraphs.forEach(createGraphFromConfig);
+    } else {
+        while (graphs.firstChild) graphs.removeChild(graphs.firstChild);
     }
 });
