@@ -19,4 +19,4 @@ pynetworktables2js --team 846
 
 Double clicking it will do all of the above for you (except downloading this repository).
 
-Note that the included `pynetworktables2js` executable is a special version built from a version that supports backups and `Infinity` and `NaN` values. [Here](https://github.com/akainth015/pynetworktables2js) is the repository if you're interested. Without the special executable, you cannot download/restore backups. 
+Note that the included `pynetworktables2js` executable is a special version built from a version that supports backups and `Infinity` and `NaN` values. [Here](https://github.com/akainth015/pynetworktables2js) is the repository if you're interested. Without the special executable, you cannot download/restore backups.

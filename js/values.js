@@ -97,7 +97,7 @@ NetworkTables.addGlobalListener((key, value, isNew) => {
         }
     }
     if (value === Infinity) console.debug(key, value);
-});
+}, true);
 
 document.getElementById("download-nt-config").addEventListener("click", e => {
     window.open("/networktables/backup")
