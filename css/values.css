@@ -2,9 +2,10 @@ div.entry {
     align-items: center;
     display: flex;
     padding: 6px 5px;
+    position: relative;
 }
 
-div.entry:hover, h1.table:hover {
+div.entry:hover label, h1.table:hover {
     background-color: dodgerblue;
     color: white;
 }
@@ -55,9 +56,20 @@ label.entry.changed {
     color: blue;
 }
 
+div.get-button {
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+div.get-value-label {
+    position: absolute;
+    left: -10px;
+    transform: translateX(-100%);
+}
+
 section.table {
     max-height: fit-content;
-    overflow: hidden;
+    /*overflow: hidden;*/
     padding-left: 32px;
     -webkit-transition: max-height 500ms;
     -moz-transition: max-height 500ms;

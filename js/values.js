@@ -51,6 +51,7 @@ function subscribeToNetworkTables() {
         const keyButAnArray = key.split("/"), name = keyButAnArray.pop(), id = NetworkTables.keyToId(key);
 
         if (isNew) {
+            console.log(key)
             const input = createElement("input", {
                 checked: value,
                 disabled: typeof value === "object",
@@ -69,13 +70,29 @@ function subscribeToNetworkTables() {
                 type: "change"
             });
 
+            const iconElement = createElement("i", {}, "fas", "fa-sync")
+            const getButton = createElement("div", {}, "get-button", iconElement);
+
             const label = createElement("label", {
                 htmlFor: id,
                 id: `${id}-label`,
                 textContent: name
             }, "entry", input);
 
-            const entry = createElement("div", {}, "entry", label);
+            const entry = createElement("div", {}, "entry", getButton, label);
+
+            getButton.addEventListener("click", async function() {
+                if (entry.querySelector(".get-value-label") !== null) return;
+                const value = await (await fetch("/networktables/get-value?key=" + key)).json();
+                const valueLabel = createElement("div", {
+                    textContent: "(" + value + ")",
+                }, "get-value-label");
+                entry.append(valueLabel);
+                window.setTimeout(function() {
+                    entry.removeChild(valueLabel);
+                }, 2000);
+                alert(key + "\n" + value);
+            });
 
             const container = findContainerForKey(keyButAnArray);
             container.append(entry);
@@ -120,7 +137,6 @@ document.getElementById("upload-nt-config").addEventListener("change", e => {
     }
 });
 
-
 function download(filename, text) {
     const element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -141,7 +157,7 @@ NetworkTables.addRobotConnectionListener(connected => {
         document.querySelectorAll("#values input").forEach(it => {
             it.disabled = true;
         });
-    } else{
+    } else {
         while (values.firstChild) values.removeChild(values.firstChild);
         unsub = subscribeToNetworkTables();
     }
