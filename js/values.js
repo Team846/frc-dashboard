@@ -51,7 +51,6 @@ function subscribeToNetworkTables() {
         const keyButAnArray = key.split("/"), name = keyButAnArray.pop(), id = NetworkTables.keyToId(key);
 
         if (isNew) {
-            console.log(key)
             const input = createElement("input", {
                 checked: value,
                 disabled: typeof value === "object",
@@ -70,8 +69,23 @@ function subscribeToNetworkTables() {
                 type: "change"
             });
 
-            const iconElement = createElement("i", {}, "fas", "fa-sync")
-            const getButton = createElement("div", {}, "get-button", iconElement);
+            const iconElement = createElement("i", {}, "fas", "fa-sync");
+            const getButton = createElement("div", {}, "get-button", iconElement, {
+                async run() {
+                    if (entry.querySelector(".get-value-label") !== null) return;
+                    const response = await fetch("/networktables/get-value?key=" + key);
+                    const value = CBOR.decode(await response.arrayBuffer());
+                    const valueLabel = createElement("div", {
+                        textContent: "(" + value + ")",
+                    }, "get-value-label");
+                    entry.append(valueLabel);
+                    window.setTimeout(function () {
+                        entry.removeChild(valueLabel);
+                    }, 2000);
+                    alert(key + "\n" + value);
+                },
+                type: "click"
+            });
 
             const label = createElement("label", {
                 htmlFor: id,
@@ -80,19 +94,6 @@ function subscribeToNetworkTables() {
             }, "entry", input);
 
             const entry = createElement("div", {}, "entry", getButton, label);
-
-            getButton.addEventListener("click", async function() {
-                if (entry.querySelector(".get-value-label") !== null) return;
-                const value = await (await fetch("/networktables/get-value?key=" + key)).json();
-                const valueLabel = createElement("div", {
-                    textContent: "(" + value + ")",
-                }, "get-value-label");
-                entry.append(valueLabel);
-                window.setTimeout(function() {
-                    entry.removeChild(valueLabel);
-                }, 2000);
-                alert(key + "\n" + value);
-            });
 
             const container = findContainerForKey(keyButAnArray);
             container.append(entry);
@@ -114,11 +115,10 @@ function subscribeToNetworkTables() {
                 }, 1000);
             }
         }
-        if (value === Infinity) console.debug(key, value);
     }, true);
 }
 
-// let unsub = subscribeToNetworkTables();
+let unsub;
 
 document.getElementById("download-nt-config").addEventListener("click", e => {
     window.open("/networktables/backup")
