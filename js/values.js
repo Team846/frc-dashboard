@@ -51,6 +51,7 @@ function subscribeToNetworkTables() {
         const keyButAnArray = key.split("/"), name = keyButAnArray.pop(), id = NetworkTables.keyToId(key);
 
         if (isNew) {
+            let newValue;
             const input = createElement("input", {
                 checked: value,
                 disabled: typeof value === "object",
@@ -63,14 +64,15 @@ function subscribeToNetworkTables() {
                 value: value,
             }, "entry", {
                 run(e) {
-                    const newValue = e.target.type === "checkbox" ? e.target.checked : (e.target.type === "number" ? parseFloat(e.target.value) : e.target.value);
-                    NetworkTables.putValue(key, newValue);
+                    newValue = e.target.type === "checkbox" ? e.target.checked : (e.target.type === "number" ? parseFloat(e.target.value) : e.target.value);
+                    document.getElementById(input.id+"-label").classList.add("unsent");
                 },
                 type: "change"
             });
 
-            const iconElement = createElement("i", {}, "fas", "fa-sync");
-            const getButton = createElement("div", {}, "get-button", iconElement, {
+
+            const getIcon = createElement("i", {}, "fas", "fa-sync");
+            const getButton = createElement("div", {}, "get-button", getIcon, {
                 async run() {
                     if (entry.querySelector(".get-value-label") !== null) return;
                     const response = await fetch("/networktables/get-value?key=" + key);
@@ -82,7 +84,16 @@ function subscribeToNetworkTables() {
                     window.setTimeout(function () {
                         entry.removeChild(valueLabel);
                     }, 2000);
-                    alert(key + "\n" + value);
+                    alert(key + "\n\nValue: " + value);
+                },
+                type: "click"
+            });
+
+            const sendIcon = createElement("i", {}, "far", "fa-paper-plane")
+            const sendButton = createElement("div", {}, "send-button", sendIcon, {
+                run() {
+                    NetworkTables.putValue(key, newValue);
+                    document.getElementsByClassName("unsent")[0].classList.remove("unsent");
                 },
                 type: "click"
             });
@@ -93,7 +104,7 @@ function subscribeToNetworkTables() {
                 textContent: name
             }, "entry", input);
 
-            const entry = createElement("div", {}, "entry", getButton, label);
+            const entry = createElement("div", {}, "entry", getButton, label, sendButton);
 
             const container = findContainerForKey(keyButAnArray);
             container.append(entry);

@@ -75,6 +75,10 @@
   border-radius: .1em;
   padding: .2em .25em .15em; }
 
+.fa-paper-plane {
+  content: "\f1d8";
+}
+
 .fa-pull-left {
   float: left; }
 

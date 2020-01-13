@@ -45,6 +45,12 @@ input.entry {
     float: right;
 }
 
+label.unsent {
+    border: 3px solid #F31431;
+    color: white;
+    background-color: #F31431;
+}
+
 label.entry {
     -webkit-animation: new-entry 1s;
     -o-animation: new-entry 1s;
@@ -59,6 +65,11 @@ label.entry.changed {
 div.get-button {
     cursor: pointer;
     margin-right: 10px;
+}
+
+div.send-button {
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 div.get-value-label {
@@ -77,7 +88,11 @@ section.table {
     -o-transition: max-height 500ms;
     transition: max-height 500ms;
 }
-
+/*
+.terror input {
+  border: 3px solid red;
+}
+*/
 section.table.collapsed {
     max-height: 0;
 }

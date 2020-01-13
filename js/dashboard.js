@@ -48,7 +48,7 @@ function showModal(modal) {
     const autocomplete = document.getElementById("keys");
     if (autocomplete) {
         while (autocomplete.firstChild) autocomplete.removeChild(autocomplete.firstChild);
-        NetworkTables.getKeys().forEach(key => autocomplete.append(createElement("option", {
+        Array.from(NetworkTables.getKeys()).forEach(key => autocomplete.append(createElement("option", {
             textContent: key
         })));
     }
