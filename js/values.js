@@ -118,7 +118,7 @@ function subscribeToNetworkTables() {
     }, true);
 }
 
-let unsub;
+let unsub = () => {};
 
 document.getElementById("download-nt-config").addEventListener("click", e => {
     window.open("/networktables/backup")
