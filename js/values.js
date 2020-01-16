@@ -65,9 +65,21 @@ function subscribeToNetworkTables() {
             }, "entry", {
                 run(e) {
                     newValue = e.target.type === "checkbox" ? e.target.checked : (e.target.type === "number" ? parseFloat(e.target.value) : e.target.value);
+                    console.log(input.id+"-label");
                     document.getElementById(input.id+"-label").classList.add("unsent");
                 },
                 type: "change"
+            }, {
+                run() {
+                    const mostRecent = document.getElementsByClassName("selected");
+                    console.log(mostRecent);
+                    console.log(typeof mostRecent);
+                    if (mostRecent.length > 0) {
+                        mostRecent[0].classList.remove("selected");
+                    }
+
+                    document.getElementById(input.id+"-label").classList.add("selected");
+                }, type: "focus"
             });
 
 
@@ -104,7 +116,7 @@ function subscribeToNetworkTables() {
                 textContent: name
             }, "entry", input);
 
-            const entry = createElement("div", {}, "entry", getButton, label, sendButton);
+            const entry = createElement("div", {}, "entry", label, sendButton, getButton);
 
             const container = findContainerForKey(keyButAnArray);
             container.append(entry);

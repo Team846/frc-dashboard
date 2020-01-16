@@ -17,6 +17,7 @@ h1.table {
     margin: 8px 8px 0;
 }
 
+
 h1.table::before {
     content: "►";
     font-size: .75em;
@@ -46,9 +47,13 @@ input.entry {
 }
 
 label.unsent {
-    border: 3px solid #F31431;
+    border: 1px solid #F31431;
     color: white;
     background-color: #F31431;
+}
+
+label.selected {
+    border: 3px solid green;
 }
 
 label.entry {
@@ -64,7 +69,7 @@ label.entry.changed {
 
 div.get-button {
     cursor: pointer;
-    margin-right: 10px;
+    margin-left: 10px;
 }
 
 div.send-button {
@@ -80,21 +85,12 @@ div.get-value-label {
 
 section.table {
     max-height: fit-content;
-    /*overflow: hidden;*/
+    /* overflow: hidden; */
     padding-left: 32px;
-    -webkit-transition: max-height 500ms;
-    -moz-transition: max-height 500ms;
-    -ms-transition: max-height 500ms;
-    -o-transition: max-height 500ms;
-    transition: max-height 500ms;
 }
-/*
-.terror input {
-  border: 3px solid red;
-}
-*/
+
 section.table.collapsed {
-    max-height: 0;
+    display: none;
 }
 
 section.table p {

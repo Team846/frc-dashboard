@@ -14,12 +14,13 @@
         <header>
             <h1>Robot Dashboard</h1>
             <p class="disconnected" id="connection-status">NO CONNECTION</p>
-            <button id="download-nt-config">Download</button>
-            <input id="upload-nt-config" type="file">
+            <button id="download-nt-config" tabindex="-1">Download</button>
+            <input id="upload-nt-config" type="file" tabindex="-1">
+            <input type="text" id="searchInput" onkeydown="keyDown()" placeholder="Query">
             <nav>
                 <ul>
-                    <li><a class="active" href="/index.html">Config</a></li>
-                    <li><a href="/graphs.html">Graphs</a></li>
+                    <li><a class="active" href="/index.html" tabindex="-1">Config</a></li>
+                    <li><a href="/graphs.html" tabindex="-1">Graphs</a></li>
                 </ul>
             </nav>
         </header>
@@ -27,7 +28,7 @@
         <!--suppress HtmlUnknownTarget -->
         <script src="http://localhost:8888/networktables/cbor.js"></script>
         <!--suppress HtmlUnknownTarget -->
-        <script data-nt-host="localhost:8888" src="http://localhost:8888/networktables/networktables.js"></script>
+        <script data-nt-host="localhost:8889" src="http://localhost:8888/networktables/networktables.js"></script>
         <script src="js/dashboard.js"></script>
         <script src="js/values.js"></script>
     </body>
