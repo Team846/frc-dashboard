@@ -52,6 +52,7 @@ function subscribeToNetworkTables() {
 
         if (isNew) {
             let newValue;
+
             const input = createElement("input", {
                 checked: value,
                 disabled: typeof value === "object",
@@ -65,20 +66,22 @@ function subscribeToNetworkTables() {
             }, "entry", {
                 run(e) {
                     newValue = e.target.type === "checkbox" ? e.target.checked : (e.target.type === "number" ? parseFloat(e.target.value) : e.target.value);
-                    console.log(input.id+"-label");
                     document.getElementById(input.id+"-label").classList.add("unsent");
                 },
                 type: "change"
             }, {
                 run() {
                     const mostRecent = document.getElementsByClassName("selected");
-                    console.log(mostRecent);
-                    console.log(typeof mostRecent);
                     if (mostRecent.length > 0) {
                         mostRecent[0].classList.remove("selected");
                     }
 
-                    document.getElementById(input.id+"-label").classList.add("selected");
+                    const element = document.getElementById(input.id+"-label");
+                    element.classList.add("selected");
+
+                    const stickyHeader = document.getElementById("stickyHeader");
+                    stickyHeader.innerHTML = key;
+
                 }, type: "focus"
             });
 

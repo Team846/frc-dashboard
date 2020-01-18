@@ -100,10 +100,6 @@ function searchAlgorithm(event, inputArray) {
     let keys = Array.from(NetworkTables.getKeys());
     const inputLength = inputArray.length;
 
-    // for (let i = 0; i < keys.length; i++) {
-    //     keys[i] = keys[i].toUpperCase();
-    // }
-
     const result = keys.slice();
     for (let queryIndex = inputLength-1; queryIndex >= 0; queryIndex--) {
         let subResultLength = keys.length;
@@ -118,23 +114,12 @@ function searchAlgorithm(event, inputArray) {
         }
         keys = result.slice();
     }
-    console.log(result);
     showResults(result)
 }
 
 function showResults(keys) {
-    // for (let i = 0; i < keys.length; i++) {
-    //     keys[i] = NetworkTables.keyToId(keys[i]);
-    // }
-    //
-    // const headers = document.getElementsByClassName("table");
-    // for (let i = 0; i < headers.length; i++) {
-    //     if (!keys.includes(headers[i].id)) {
-    //         headers[i].classList.add("collapsed");
-    //     }
-    // }
-
     const allKeys = Array.from(NetworkTables.getKeys());
+
     let element;
     for (let i = 0; i < allKeys.length; i++) {
         let id = NetworkTables.keyToId(allKeys[i]);
@@ -147,6 +132,40 @@ function showResults(keys) {
         keys[i] = NetworkTables.keyToId(keys[i]);
         let element = document.getElementById(keys[i]);
         element.setAttribute("tabIndex", "0");
-        //element.classList.add("found");
     }
+}
+
+const header = document.getElementById("stickyHeader");
+window.onscroll = function() {pageMoved()};
+
+function pageMoved() {
+    const selected = document.getElementsByClassName("selected");
+
+    if (selected.length > 0) {
+        const elementHeight = selected[0].getBoundingClientRect().top;
+
+        if (elementHeight > window.innerHeight || elementHeight < 0) {
+            header.innerHTML = findTopMost();
+        }
+    } else {
+        header.innerHTML = findTopMost();
+    }
+}
+
+function findTopMost() {
+    const keys = Array.from(NetworkTables.getKeys());
+
+    let topMost;
+    let smallest = Number.MAX_SAFE_INTEGER;
+    for (let i = 0; i < keys.length; i++) {
+        let element = document.getElementById(NetworkTables.keyToId(keys[i]));
+
+        let current = element.getBoundingClientRect().top-23;
+        if (Math.abs(current) < Math.abs(smallest)) {
+            smallest = current;
+            topMost = keys[i];
+        }
+    }
+
+    return topMost;
 }

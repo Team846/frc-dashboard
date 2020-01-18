@@ -105,13 +105,25 @@ header nav {
 }
 
 header input[type=text] {
-  padding: 6px;
-  border: 1px solid black;
-  border-radius: 2px;
-  font-size: 15px;
-  outline: none;
-  resize: none;
-  width: 25%;
+    padding: 6px;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: 15px;
+    outline: none;
+    resize: none;
+    width: 25%;
+}
+
+
+div.sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0px;
+    background-color: #e0c68b;
+    border-bottom: thin solid gray;
+    color: #333333;
+    padding: 5px 0px 5px 5px;
+    z-index: 1;
 }
 
 
