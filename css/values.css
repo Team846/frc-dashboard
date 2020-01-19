@@ -46,6 +46,10 @@ input.entry {
     float: right;
 }
 
+select.entry {
+    float: right;
+}
+
 label.unsent {
     border: 1px solid #F31431;
     color: white;

@@ -134,38 +134,3 @@ function showResults(keys) {
         element.setAttribute("tabIndex", "0");
     }
 }
-
-const header = document.getElementById("stickyHeader");
-window.onscroll = function() {pageMoved()};
-
-function pageMoved() {
-    const selected = document.getElementsByClassName("selected");
-
-    if (selected.length > 0) {
-        const elementHeight = selected[0].getBoundingClientRect().top;
-
-        if (elementHeight > window.innerHeight || elementHeight < 0) {
-            header.innerHTML = findTopMost();
-        }
-    } else {
-        header.innerHTML = findTopMost();
-    }
-}
-
-function findTopMost() {
-    const keys = Array.from(NetworkTables.getKeys());
-
-    let topMost;
-    let smallest = Number.MAX_SAFE_INTEGER;
-    for (let i = 0; i < keys.length; i++) {
-        let element = document.getElementById(NetworkTables.keyToId(keys[i]));
-
-        let current = element.getBoundingClientRect().top-23;
-        if (Math.abs(current) < Math.abs(smallest)) {
-            smallest = current;
-            topMost = keys[i];
-        }
-    }
-
-    return topMost;
-}

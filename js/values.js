@@ -12,7 +12,8 @@ function findContainerForKey(parts) {
         }, "table");
 
         const label = createElement("h1", {
-            textContent: parts.pop()
+            textContent: parts.pop(),
+
         }, "table", {
             run() {
                 if (isOpen) {
@@ -52,38 +53,52 @@ function subscribeToNetworkTables() {
 
         if (isNew) {
             let newValue;
-
-            const input = createElement("input", {
-                checked: value,
-                disabled: typeof value === "object",
-                id,
-                step: typeof value === "number" ? "any" : undefined,
-                type: {
-                    boolean: "checkbox",
-                    number: "number"
-                }[typeof value],
-                value: value,
-            }, "entry", {
-                run(e) {
-                    newValue = e.target.type === "checkbox" ? e.target.checked : (e.target.type === "number" ? parseFloat(e.target.value) : e.target.value);
-                    document.getElementById(input.id+"-label").classList.add("unsent");
-                },
-                type: "change"
-            }, {
-                run() {
-                    const mostRecent = document.getElementsByClassName("selected");
-                    if (mostRecent.length > 0) {
-                        mostRecent[0].classList.remove("selected");
-                    }
-
-                    const element = document.getElementById(input.id+"-label");
-                    element.classList.add("selected");
-
-                    const stickyHeader = document.getElementById("stickyHeader");
-                    stickyHeader.innerHTML = key;
-
-                }, type: "focus"
-            });
+            let input = createElement();
+            if (typeof value === 'number') {
+                input = createElement("input", {
+                    disabled: typeof value === "object",
+                    id,
+                    step: "any",
+                    type: "number",
+                    value: value,
+                }, "entry", {
+                    run(e) {
+                        newValue = e.target.type === "number" ? parseFloat(e.target.value) : e.target.value;
+                        document.getElementById(input.id+"-label").classList.add("unsent");
+                    },
+                    type: "change"
+                }, {
+                    run() {
+                        isFocused(input, key);
+                    }, type: "focus"
+                }, {
+                    run() {
+                        isHovered(key);
+                    }, type: "mouseover"
+                });
+            } else {
+                input = createElement("select", {
+                    disabled: typeof value === "object",
+                    id,
+                }, "entry", {
+                    run(e) {
+                        newValue = e.target.selectedIndex === 0;
+                        document.getElementById(input.id+"-label").classList.add("unsent");
+                    },
+                    type: "change"
+                }, {
+                    run() {
+                        isFocused(input, key);
+                    }, type: "focus"
+                }, {
+                    run() {
+                        isHovered(key);
+                    }, type: "mouseover"
+                });
+                input.insertAdjacentHTML("beforeend", "<option value = 'True'>True</option>");
+                input.insertAdjacentHTML("beforeend", "<option value = 'False'>False</option>");
+                input.selectedIndex = value ? 0 : 1;
+            }
 
 
             const getIcon = createElement("i", {}, "fas", "fa-sync");
@@ -104,7 +119,7 @@ function subscribeToNetworkTables() {
                 type: "click"
             });
 
-            const sendIcon = createElement("i", {}, "far", "fa-paper-plane")
+            const sendIcon = createElement("i", {}, "far", "fa-paper-plane");
             const sendButton = createElement("div", {}, "send-button", sendIcon, {
                 run() {
                     NetworkTables.putValue(key, newValue);
@@ -117,7 +132,11 @@ function subscribeToNetworkTables() {
                 htmlFor: id,
                 id: `${id}-label`,
                 textContent: name
-            }, "entry", input);
+            }, "entry", input, {
+                run() {
+                    isHovered(key);
+                }, type: "mouseover"
+            });
 
             const entry = createElement("div", {}, "entry", label, sendButton, getButton);
 
@@ -127,7 +146,7 @@ function subscribeToNetworkTables() {
             const input = document.getElementById(id);
             if (input !== document.activeElement) {
                 if (typeof value === "boolean") {
-                    input.checked = value;
+                    input.selectedIndex = value ? 0 : 1;
                 } else {
                     input.value = value;
                 }
@@ -174,6 +193,34 @@ function download(filename, text) {
     element.click();
 
     document.body.removeChild(element);
+}
+
+function isFocused(input, key) {
+    const mostRecent = document.getElementsByClassName("selected");
+    if (mostRecent.length > 0) {
+        mostRecent[0].classList.remove("selected");
+    }
+
+    const element = document.getElementById(input.id+"-label");
+    element.classList.add("selected");
+
+    const stickyHeader = document.getElementById("stickyHeader");
+    stickyHeader.innerHTML = key;
+}
+
+function isHovered(key) {
+    const header = document.getElementById("stickyHeader");
+    const selected = document.getElementsByClassName("selected");
+
+    if (selected.length > 0) {
+        const elementHeight = selected[0].getBoundingClientRect().top;
+
+        if (elementHeight > window.innerHeight || elementHeight < 0) {
+            header.innerHTML = key;
+        }
+    } else {
+        header.innerHTML = key;
+    }
 }
 
 NetworkTables.addRobotConnectionListener(connected => {
