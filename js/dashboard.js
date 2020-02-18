@@ -84,3 +84,55 @@ function showModal(modal) {
     return closeModal;
 }
 
+
+function keyDown() {
+    const inputArray = document.getElementById("searchInput").value.toUpperCase().split(" ");
+    const input = document.getElementById("searchInput");
+
+    input.addEventListener("keyup", function(event) {
+        if (event.code === "Enter") {
+            searchAlgorithm(event, inputArray);
+        }
+        this.removeEventListener("keyup", arguments.callee);
+    });
+}
+
+function searchAlgorithm(event, inputArray) {
+    let keys = Array.from(NetworkTables.getKeys());
+    const inputLength = inputArray.length;
+
+    const result = keys.slice();
+    for (let queryIndex = inputLength-1; queryIndex >= 0; queryIndex--) {
+        let subResultLength = keys.length;
+        let currQuery = inputArray[queryIndex];
+
+        for (let keyIndex = 0; keyIndex < subResultLength; keyIndex++) {
+            let currKey = keys[keyIndex];
+
+            if (!(currKey.toUpperCase().includes(currQuery))) {
+                result.splice(result.indexOf(currKey), 1);
+            }
+        }
+        keys = result.slice();
+    }
+    showResults(result)
+}
+
+function showResults(keys) {
+    const allKeys = Array.from(NetworkTables.getKeys());
+
+    let element;
+    for (let i = 0; i < allKeys.length; i++) {
+        let id = NetworkTables.keyToId(allKeys[i]);
+        element = document.getElementById(id);
+        element.setAttribute("tabIndex", "-1");
+
+    }
+
+    for (let i = 0; i < keys.length; i++) {
+        keys[i] = NetworkTables.keyToId(keys[i]);
+        let element = document.getElementById(keys[i]);
+        element.setAttribute("tabIndex", "0");
+    }
+}
+

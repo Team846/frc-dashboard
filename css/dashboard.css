@@ -111,7 +111,11 @@ header input[type=text] {
     font-size: 15px;
     outline: none;
     resize: none;
+<<<<<<< HEAD
     width: 10%;
+=======
+    width: 25%;
+>>>>>>> de0b530bb9d1a5bfc8ca2ad04adf9cf114e919c8
 }
 
 
