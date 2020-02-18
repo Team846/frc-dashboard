@@ -15,8 +15,9 @@
             <h1>Robot Dashboard</h1>
             <p class="disconnected" id="connection-status">NO CONNECTION</p>
             <button id="download-nt-config" tabindex="-1">Download</button>
+            <button id="" tabindex="-1">Next</button>
             <input id="upload-nt-config" type="file" tabindex="-1">
-            <input type="text" id="searchInput" onkeydown="keyDown()" placeholder="Query">
+            <input type="text" id="searchInput" placeholder="Query">
             <nav>
                 <ul>
                     <li><a class="active" href="/index.html" tabindex="-1">Config</a></li>
@@ -24,6 +25,7 @@
                 </ul>
             </nav>
         </header>
+        <div class="sticky" id="stickyHeader"></div>
         <div id="values"></div>
         <!--suppress HtmlUnknownTarget -->
         <script src="http://localhost:8888/networktables/cbor.js"></script>
