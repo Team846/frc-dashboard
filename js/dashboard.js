@@ -5,7 +5,7 @@ const modals = [];
 
 NetworkTables.addRobotConnectionListener(connected => {
     if (connected) {
-        connectionStatus.textContent = "CONNECTED";
+        connectionStatus.textContent = NetworkTables.getRobotAddress();
         connectionStatus.classList.remove("disconnected");
     } else {
         connectionStatus.textContent = "NO CONNECTION";
