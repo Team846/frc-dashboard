@@ -40,6 +40,28 @@
     pointer-events: all;
 }
 
+:root {
+    --background-color: #f6f6f6;
+    --font-color: #222;
+  }
+  
+  :root.dark{
+    --background-color: #222;
+    --font-color: #f6f6f6;
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background-color: #222;
+      --font-color: #f6f6f6;
+    }
+  
+    :root.light {
+      --background-color: #f6f6f6;
+      --font-color: #222;
+    }
+  }
+
 body {
     font-family: "Roboto Condensed", sans-serif;
     margin: 0;
@@ -89,7 +111,7 @@ button:not(.fab) i {
 
 header {
     align-items: center;
-    background-color: white;
+    background-color: var(--background-color);
     border-bottom: thin solid gray;
     color: gray;
     display: flex;
@@ -111,11 +133,7 @@ header input[type=text] {
     font-size: 15px;
     outline: none;
     resize: none;
-<<<<<<< HEAD
     width: 10%;
-=======
-    width: 25%;
->>>>>>> de0b530bb9d1a5bfc8ca2ad04adf9cf114e919c8
 }
 
 
@@ -149,7 +167,7 @@ div.sticky {
     }
 
     header li a {
-        color: black;
+        color: white;
         padding: 5px 15px;
         text-decoration: none;
         text-transform: uppercase;
