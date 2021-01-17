@@ -270,8 +270,29 @@ function showResults(keys) {
     document.querySelectorAll('label.entry').forEach(it => it.style.display = "none");
     document.querySelectorAll('div.send-button').forEach(it => it.style.display = "none");
     document.querySelectorAll('div.get-button').forEach(it => it.style.display = "none");
+    document.querySelectorAll('h1.table').forEach(it => it.style.display = "none");
+    setTimeout(function(){
+        document.querySelectorAll('div.entry').forEach((a) => {
+            const labels = a.querySelectorAll('label')
+            if ([...labels].every((item) => item.style.display === 'none')) {
+                a.style.display = 'none'
+            }
+        })
+    },0)
 
     keys.map(NetworkTables.keyToId).forEach(id => {
         document.getElementById(`${id}-label`).style.display = "block";
+        let value = document.getElementById("searchInput").value;
+        if (value == "") {
+            document.querySelectorAll('h1.table').forEach(it => it.style.display = "block");
+        }
+        setTimeout(function(){
+            document.querySelectorAll('div.entry').forEach((a) => {
+                const labels = a.querySelectorAll('label')
+                if ([...labels].every((item) => item.style.display === 'block')) {
+                    a.style.display = 'block'
+                }
+            })
+        },0)
     });
 }
