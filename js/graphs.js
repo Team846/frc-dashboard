@@ -336,7 +336,7 @@ function render() {
                     let [x, y] = v;
                     x = (x - chart.config.minX) / optimized.xDenominator;
                     y = (y - chart.config.minY) / optimized.yDenominator;
-                    ctx.fillStyle = `rgba(0, 0, 0, ${i / chart.buffer.length})`;
+                    ctx.fillStyle = `rgba(44, 130, 201, ${i / chart.buffer.length})`;
                     ctx.beginPath();
                     ctx.arc(x, chart.canvas.height - y, 5, 0, 2 * Math.PI);
                     ctx.fill();
